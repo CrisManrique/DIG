@@ -1,11 +1,53 @@
-import React from 'react';
+import React, { useState } from 'react';
+import emailjs from 'emailjs-com';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 
 import Button from 'react-bootstrap/Button';
 import contactUsFormImg from '../images/contact-us-image.svg';
 
+
+
 const ContactUsForm = () => {
+
+  const [feedback, setFeedback] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+
+
+  const handleSubmit = (e) =>{
+    e.preventDefault();
+    const templateId = 'template_pq2t8bg';
+
+    console.log(feedback + " " + email + " " + name);
+    sendFeedback(templateId, {
+      message: feedback,
+      name: name,
+      email: email
+    })
+
+
+  };
+
+
+ const sendFeedback = (templateId, variables) => {
+    emailjs.send('gmail', templateId, variables, 'user_cs0YJGgLFrjMgS8qwY6gg')
+    .then(res => {
+      console.log("Succesfully sent email: " + res)
+
+    })
+    .catch(e => {
+      console.log("Error sending email: " + e);
+    })
+
+    document.getElementById("Form").reset();
+  }
+
+
+
+  
+
+
   return (
     <Row className='home-row'>
       <div className='col-lg-6'>
@@ -19,14 +61,22 @@ const ContactUsForm = () => {
       </div>
       <div className='col-lg-6'>
         <h1 className='display-4 font-weight-bold mb-3'>Contact Us</h1>
-        <Form>
+        <Form id="Form">
           <Form.Group controlId='formGroupName'>
             <Form.Label>Name</Form.Label>
-            <Form.Control type='text' placeholder='Enter Name' />
+            <Form.Control 
+              type='text' 
+              placeholder='Enter Name'
+              onChange={(e) => 
+                setName(e.target.value)}
+            />
           </Form.Group>
           <Form.Group controlId='formGroupEmail'>
             <Form.Label>Email</Form.Label>
-            <Form.Control type='email' placeholder='Enter email' />
+            <Form.Control type='email' 
+              placeholder='Enter email' 
+              onChange={(e) => setEmail(e.target.value)}  
+            />
           </Form.Group>
 
           <Form.Group controlId='formGroupMessage'>
@@ -36,6 +86,7 @@ const ContactUsForm = () => {
                 className='form-control'
                 id='ormGroupMessage'
                 rows='5'
+                onChange={(e) => setFeedback(e.target.value)}
               />
             </div>
           </Form.Group>
@@ -45,6 +96,7 @@ const ContactUsForm = () => {
             variant='primary'
             type='submit'
             className='my-2 my-lg-0 py-3 px-5'
+            onClick={handleSubmit}
           >
             Submit
           </Button>

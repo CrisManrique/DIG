@@ -17,7 +17,9 @@ const Profile = () => {
   const [avg, setAvg] = useState(0);
   const [scores, setScores] = useState(null);
 
+  
   function handleLogOut() {
+    
     logout();
     redirect.push('/');
   }
@@ -49,9 +51,14 @@ const Profile = () => {
 
         setName(doc.data().firstName + ' ' + doc.data().lastName);
         setSchool(doc.data().school);
+        
+      })
+      .catch(e => {
+        console.log("Error fetching info " + e);
       });
   }, []);
 
+  
   const month = [
     'January',
     'February',
@@ -105,7 +112,7 @@ const Profile = () => {
             <Card.Text className='profile-card-text'>
               <strong>Email:</strong> {user.email}
               <br />
-              <strong>School:</strong> {school} <br />
+              <strong>School:</strong> {user.school} <br />
             </Card.Text>
             <Card.Text className='profile-card-text'>
               <strong>Last Survey Taken:</strong> {last}

@@ -17,7 +17,7 @@ const NavBar = () => {
   useEffect(() => {
     if (location.pathname.startsWith('/questionnaire')) {
       setActiveKey(1);
-    } else if (location.pathname.startsWith('/tips')) {
+    } else if (location.pathname.startsWith('/learn')) {
       setActiveKey(2);
     } else if (location.pathname.startsWith('/profile')) {
       setActiveKey(3);
@@ -48,7 +48,7 @@ const NavBar = () => {
             <Nav.Link as={Link} to='/' eventKey={0}>
               Home
             </Nav.Link>
-            <Nav.Link as={Link} to='/tips' eventKey={2}>
+            <Nav.Link as={Link} to='/learn' eventKey={2}>
               Tips
             </Nav.Link>
             {user && (

@@ -25,7 +25,7 @@ const LogIn = () => {
       setError('');
       setLoading(true);
       await login(emailRef.current.value, passwordRef.current.value);
-      redirect.push('/questionnaire');
+      redirect.push('/');
     } catch (e) {
       setError('Failed to sign in');
       setLoading(false);

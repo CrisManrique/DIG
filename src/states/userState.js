@@ -2,12 +2,14 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { auth, firestore } from '../assets/firebase';
 import firebase from 'firebase/app';
 
+//Name of database
 const usersCollection = firestore.collection('users');
 
 const userContext = createContext();
 
 //shortcut hook to be able to access all functions from the context when we want
 export function useAuth() {
+  
   return useContext(userContext);
 }
 
@@ -89,3 +91,7 @@ export function UserProvider({ children }) {
     </userContext.Provider>
   );
 }
+
+
+
+
