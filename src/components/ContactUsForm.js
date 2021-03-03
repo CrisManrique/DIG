@@ -10,18 +10,23 @@ import contactUsFormImg from '../images/contact-us-image.svg';
 
 const ContactUsForm = () => {
 
-  const [feedback, setFeedback] = useState("");
+  //Variables and setters methods for email contact form
+  const [message, setMessage] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
 
+  /*
+    Once submit button is clicked, this method is executed
+    which calls the sendFeedback method with the templateID and message body, 
+    email, and name of the student
+  */
   const handleSubmit = (e) =>{
-    e.preventDefault();
-    const templateId = 'template_pq2t8bg';
+    const templateId = 'template_pq2t8bg'; //id of the email template being used
 
-    console.log(feedback + " " + email + " " + name);
+    console.log(message + " " + email + " " + name);
     sendFeedback(templateId, {
-      message: feedback,
+      message: message,
       name: name,
       email: email
     })
@@ -30,6 +35,10 @@ const ContactUsForm = () => {
   };
 
 
+/*
+  This method sends the contents of the contact form to the email
+  attached to the emailJS account. 
+*/
  const sendFeedback = (templateId, variables) => {
     emailjs.send('gmail', templateId, variables, 'user_cs0YJGgLFrjMgS8qwY6gg')
     .then(res => {
@@ -40,7 +49,7 @@ const ContactUsForm = () => {
       console.log("Error sending email: " + e);
     })
 
-    document.getElementById("Form").reset();
+    document.getElementById("Form").reset(); //resets contact form text to empty
   }
 
 
@@ -86,7 +95,7 @@ const ContactUsForm = () => {
                 className='form-control'
                 id='ormGroupMessage'
                 rows='5'
-                onChange={(e) => setFeedback(e.target.value)}
+                onChange={(e) => setMessage(e.target.value)}
               />
             </div>
           </Form.Group>

@@ -54,7 +54,7 @@ const Profile = () => {
         
       })
       .catch(e => {
-        console.log("Error fetching info " + e);
+        console.log("User info " , e);
       });
   }, []);
 

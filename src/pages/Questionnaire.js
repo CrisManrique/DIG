@@ -22,11 +22,13 @@ const Questionnaire = () => {
     try {
       await addScoreToDb(user.uid, total, new Date());
     } catch (e) {
-      console.log(e);
+      await addNewScoreToDb(user.uid, total, new Date());
+      console.log(e + " error here");
     }
 
     history.push(`/success/${total}`);
   };
+
 
   const handleSelect = (selectedIndex, e) => {
     if (e.target.classList.contains('next')) {
