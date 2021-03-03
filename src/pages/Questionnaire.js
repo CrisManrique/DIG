@@ -10,7 +10,18 @@ const Questionnaire = () => {
   const [index, setIndex] = useState(0);
   const [score, setScore] = useState({});
   let history = useHistory();
-  const { user, addScoreToDb } = useAuth();
+  const { user, usersCollection, addScoreToDb, addNewScoreToDb} = useAuth();
+  let newScore;
+  
+  usersCollection
+  .doc(user.uid)
+  .get()
+  .then(function (doc) {
+    if (doc.data().scores) {
+      newScore = doc.data().scores;
+    }
+  });
+
 
   const handleFinish = async () => {
     let total = 0;
@@ -20,9 +31,14 @@ const Questionnaire = () => {
     }
 
     try {
-      await addScoreToDb(user.uid, total, new Date());
+      if(newScore === undefined){
+        await addNewScoreToDb(user.uid, total, new Date());
+      }
+      else {
+        await addScoreToDb(user.uid, total, new Date());
+      }
+      
     } catch (e) {
-      await addNewScoreToDb(user.uid, total, new Date());
       console.log(e + " error here");
     }
 
