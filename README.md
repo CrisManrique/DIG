@@ -20,7 +20,7 @@ Builds the app for production.
 - [React-Bootstrap](https://react-bootstrap.github.io/)
 - [Firebase](https://firebase.google.com/)
 - [Netlify](https://www.netlify.com/)
-- [emailJS] (https://www.emailjs.com/)
+- emailJS (https://www.emailjs.com/)
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
