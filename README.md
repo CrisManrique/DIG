@@ -4,12 +4,6 @@
 Fall 2020 Dream In Green Project
 
 ## Team:
-**Lead:** Angelo Martinez\
-**Co-Lead:** Ariadna Arias\
-**Team-Member:** Daniel Acosta\
-**Team-Member:** Jorge Rios\
-**Team-Member:** Nathalia Dias\
-**Team-Member:** Shirley Cabrera
 
 ## Scripts:
 
