@@ -2,14 +2,12 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { auth, firestore } from '../assets/firebase';
 import firebase from 'firebase/app';
 
-//Name of database
 const usersCollection = firestore.collection('users');
 
 const userContext = createContext();
 
 //shortcut hook to be able to access all functions from the context when we want
 export function useAuth() {
-  
   return useContext(userContext);
 }
 
@@ -53,15 +51,6 @@ export function UserProvider({ children }) {
     });
   }
 
-  function addNewScoreToDb(uid, score, createdAt) {
-    usersCollection.doc(uid).set({
-      scores: firebase.firestore.FieldValue.arrayUnion({
-        score,
-        createdAt,
-      }),
-    });
-  }
-
   /* firebase api has its own listener for when the user has signed in or not
   we only want to do this once when the sign in page is mounted, once it is 
   un mounted there is no more need for the listener */
@@ -92,7 +81,6 @@ export function UserProvider({ children }) {
     logout,
     registerUser,
     addScoreToDb,
-    addNewScoreToDb
   };
 
   return (
@@ -101,7 +89,3 @@ export function UserProvider({ children }) {
     </userContext.Provider>
   );
 }
-
-
-
-

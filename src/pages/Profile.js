@@ -1,10 +1,11 @@
+  
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import Image from 'react-bootstrap/Image';
 import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
 import { useAuth } from '../states/userState';
-
+import nicknames from '../assets/nicknames';
 import defaultProfileImage from '../images/default-profile-img.jpg';
 
 const Profile = () => {
@@ -16,19 +17,20 @@ const Profile = () => {
   const [last, setLast] = useState('');
   const [avg, setAvg] = useState(0);
   const [scores, setScores] = useState(null);
-
+  const [cuteName, setCuteName] = useState('');
   
   function handleLogOut() {
-    
     logout();
     redirect.push('/');
   }
 
   useEffect(() => {
+  
     usersCollection
       .doc(user.uid)
       .get()
       .then(function (doc) {
+        console.log("running");
         if (doc.data().scores) {
           let arr = doc.data().scores.reverse();
           setScores(arr);
@@ -43,7 +45,16 @@ const Profile = () => {
           for (var i = 0; i < arr.length; i++) {
             sum = sum + arr[i].score;
           }
-          setAvg((sum / arr.length).toFixed(2));
+          const const_avg = (sum / arr.length).toFixed(2);
+          setAvg((sum / arr.length).toFixed(2))
+
+          nicknames.forEach(function (nickname, index) {
+            if(const_avg >= nickname.bottom){
+              setCuteName(nicknames[index].name);
+            }
+          });
+            
+
         } else {
           setScores(undefined);
           setLast('N/A');
@@ -51,14 +62,11 @@ const Profile = () => {
 
         setName(doc.data().firstName + ' ' + doc.data().lastName);
         setSchool(doc.data().school);
-        
-      })
-      .catch(e => {
-        console.log("User info " , e);
+      
       });
   }, []);
 
-  
+
   const month = [
     'January',
     'February',
@@ -102,6 +110,7 @@ const Profile = () => {
               roundedCircle
             />
             <h5 className='mt-2 mb-3 text-primary'>{name}</h5>
+            <h5 className='mt-2 mb-3 text-primary'>{cuteName}</h5>
             <button
               type='button'
               className='btn btn-primary py-2 px-5 mb-3'
@@ -112,7 +121,7 @@ const Profile = () => {
             <Card.Text className='profile-card-text'>
               <strong>Email:</strong> {user.email}
               <br />
-              <strong>School:</strong> {user.school} <br />
+              <strong>School:</strong> {school} <br />
             </Card.Text>
             <Card.Text className='profile-card-text'>
               <strong>Last Survey Taken:</strong> {last}
