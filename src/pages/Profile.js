@@ -1,4 +1,3 @@
-  
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import Image from 'react-bootstrap/Image';
@@ -7,6 +6,8 @@ import Table from 'react-bootstrap/Table';
 import { useAuth } from '../states/userState';
 import nicknames from '../assets/nicknames';
 import defaultProfileImage from '../images/default-profile-img.jpg';
+import firebase from 'firebase/app';
+import 'firebase/storage';
 
 const Profile = () => {
   const { logout, user, usersCollection } = useAuth();
@@ -18,7 +19,8 @@ const Profile = () => {
   const [avg, setAvg] = useState(0);
   const [scores, setScores] = useState(null);
   const [cuteName, setCuteName] = useState('');
-  
+  const [profilePic, setProfilePic] = useState(defaultProfileImage);
+
   function handleLogOut() {
     logout();
     redirect.push('/');
@@ -30,7 +32,6 @@ const Profile = () => {
       .doc(user.uid)
       .get()
       .then(function (doc) {
-        console.log("running");
         if (doc.data().scores) {
           let arr = doc.data().scores.reverse();
           setScores(arr);
@@ -60,12 +61,20 @@ const Profile = () => {
           setLast('N/A');
         }
 
+
         setName(doc.data().firstName + ' ' + doc.data().lastName);
         setSchool(doc.data().school);
-      
+        
       });
   }, []);
 
+  const onSubmit = (file) => {
+    let bucket = firebase.storage().ref().child(file.target.value);
+    bucket.put(file.target.files[0]).then((snapshot) => {
+      console.log('Uploaded a file! ' , snapshot);
+    });
+    setProfilePic(file.target.files[0]);
+  }
 
   const month = [
     'January',
@@ -104,13 +113,14 @@ const Profile = () => {
       <div className='row profile-container'>
         <div className='col m-3 profile-user-col'>
           <Card className='profile-card' border='primary'>
+             <input type='file' onChange={onSubmit}/>
             <Image
               className='profile-image'
-              src={defaultProfileImage}
+              src={profilePic}
               roundedCircle
             />
-            <h5 className='mt-2 mb-3 text-primary'>{name}</h5>
-            <h5 className='mt-2 mb-3 text-primary'>{cuteName}</h5>
+            <h3 className='mt-2 mb-3 text-primary'>{name}</h3>
+            <h5 className='mt-2 mb-3 text-primary'>Current Level: {cuteName}</h5>
             <button
               type='button'
               className='btn btn-primary py-2 px-5 mb-3'

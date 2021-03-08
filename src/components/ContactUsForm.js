@@ -22,6 +22,7 @@ const ContactUsForm = () => {
     email, and name of the student
   */
   const handleSubmit = (e) =>{
+    e.preventDefault();
     const templateId = 'template_pq2t8bg'; //id of the email template being used
 
     console.log(message + " " + email + " " + name);
