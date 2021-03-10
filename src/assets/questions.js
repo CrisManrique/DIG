@@ -4,7 +4,12 @@ const questions = [
     ans: [
       {
         value: 0,
-        ans: "Stay inside and turn the air conditioner on.",
+        ans: "Stay cozy inside and turn the air conditioner on.",
+      },
+      {
+        value: 5,
+        ans:
+          'Go for a short walk, but come back home not long after',
       },
       {
         value: 10,
@@ -38,22 +43,26 @@ const questions = [
       {
         value: 5,
         ans:
-          'Get a new one and keep the old one, you never know when you might need it.',
+          'Get a new one and donate/sell the older one.',
       },
       {
         value: 0,
-        ans: 'Get a new one and donate/sell the older one.',
+        ans: 'Get a new one and throw the old one in the trash.',
       },
     ],
     type: 'multipleChoice',
   },
   {
     ques:
-      "You go to the kitchen to make yourself a sandwich, do you...",
+      "You are walking out to run a quick errand,, do you...",
     ans: [
       {
         value: 0,
-        ans: "Leave the light on, it's only going to be a minute anyway!",
+        ans: "Leave the air conditioner and lights on.",
+      },
+      {
+        value: 5,
+        ans: "Shut off air conditioner but leave the lights on, it's only going to be a minute anyway!",
       },
       {
         value: 10,
@@ -64,7 +73,7 @@ const questions = [
   },
   {
     ques: 'On average, how long are your showers',
-    ans: ['5 minutes', '20 minutes'],
+    ans: ['25 minutes', '5 minutes'],
     type: 'slider',
   },
   {
@@ -76,7 +85,7 @@ const questions = [
         ans: 'Each drive their own separate vehicle.',
       },
       {
-        value: 8,
+        value: 7,
         ans: 'Carpool together.',
       },
       {
@@ -95,6 +104,10 @@ const questions = [
         ans: "Toss the old ones out, they're probably too old anyway...",
       },
       {
+        value: 3,
+        ans: "Use them as rags for cleaning around the house before tossing them",
+      },
+      {
         value: 10,
         ans:
           'Try and separate the ones in better shape and donate them',
@@ -103,19 +116,19 @@ const questions = [
     type: 'multipleChoice',
   },
   {
-    ques: 'On average, how long do use your devices for?',
+    ques: 'On average, how long do use your electronic devices each day?',
     ans: [
       {
         value: 10,
-        ans: 'Less than 8 hours.',
+        ans: 'Less than 6 hours.',
       },
       {
         value: 5,
-        ans: 'between 8 and 12 hours.',
+        ans: 'between 6 and 10 hours.',
       },
       {
         value: 0,
-        ans: 'More than 12.',
+        ans: 'More than 10.',
       },
     ],
     type: 'multipleChoice',
@@ -124,11 +137,11 @@ const questions = [
     ques: "When you're going on a vacation, do you... ",
     ans: [
       {
-        value: 0,
+        value: 3,
         ans: 'Travel by plane',
       },
       {
-        value: 8,
+        value: 7,
         ans: 'Travel by bus',
       },
       {
@@ -136,14 +149,14 @@ const questions = [
         ans: 'Travel by train',
       },
       {
-        value: 4,
+        value: 0,
         ans: 'Travel by car',
       },
     ],
     type: 'multipleChoice',
   },
   {
-    ques: 'When your parents get groceries, do they...',
+    ques: 'When your family gets groceries, do they...',
     ans: [
       {
         value: 0,
@@ -185,12 +198,12 @@ const questions = [
   },
   {
     ques: 'On average, how long do you keep the lights on during the day?',
-    ans: ['0 hours', '24 hours'],
+    ans: ['24 hours', '0 hours'],
     type: 'slider',
   },
   {
     ques: 'On average, how much do you commute to school and/or work?',
-    ans: ['Less than 1 mile', 'More than 10 miles'],
+    ans: ['More than 10 miles', 'Less than 1 mile'],
     type: 'slider',
   },
   {
@@ -212,7 +225,7 @@ const questions = [
     ans: [
       {
         value: 10,
-        ans: 'Go to your local thrift store.',
+        ans: 'Go to a local shop or thrift store.',
       },
       {
         value: 5,
