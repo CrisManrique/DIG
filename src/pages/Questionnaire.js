@@ -34,6 +34,7 @@ const Questionnaire = () => {
         handleFinish();
       } else if (score[selectedIndex - 1] > -1) {
         setIndex(selectedIndex);
+        console.log("score contains ",score);
       } else {
         alert('You must select an answer!');
       }

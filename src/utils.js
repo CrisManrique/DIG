@@ -28,6 +28,7 @@ export const buildAnswers = (question, questionIndex, score, setScore) => {
           min={0}
           max={10}
           onChange={(e) => setScore({ ...score, [questionIndex]: e })}
+          
         />
       </div>
     );
