@@ -27,7 +27,6 @@
     "sass": "^1.27.0"
   },
   "dependencies": {
-    "@google-cloud/storage": "^5.8.1",
     "bootstrap": "^4.5.2",
     "emailjs-com": "^2.6.4",
     "firebase": "^8.0.1",

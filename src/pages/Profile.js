@@ -8,9 +8,6 @@ import nicknames from '../assets/nicknames';
 import defaultProfileImage from '../images/default-profile-img.jpg';
 import firebase from 'firebase/app';
 import 'firebase/storage';
-//const {Storage} = require('@google-cloud/storage');
-//const storage = new Storage();
-//const myBucket = storage.bucket('dream-in-green.appspot.com');
 
 const Profile = () => {
   const { logout, user, usersCollection } = useAuth();
@@ -78,26 +75,24 @@ const Profile = () => {
   }, []);
 
  //Uploads the file to the firebase 
-  async function onSubmit (file) {
+   const onSubmit = (file) => {
     /*
       The ref() parameter is what we are setting the path of the users profile picture in our firebase bucket
-      The await keyword is used to makesure the program waits for the image to be uploaded to firebase
-      before running the downloadProfilePic() method
     */
-    await firebase.storage().ref('users/'+user.uid + '/profile.jpg').put(file.target.files[0]).then( () => {
+    firebase.storage().ref('users/'+user.uid + '/profile.jpg').put(file.target.files[0]).then( () => {
       console.log("Successfully uploaded image")
     }).catch(error => {
       console.log("Error uploading image: " + error);
     });
 
-    downloadProfilePic();
+    setProfilePic(URL.createObjectURL(file.target.files[0]));
   }
 
   //Downloads the profile picture in our firebase bucket and sets the state of profilePic to it
   const downloadProfilePic = () => {
     firebase.storage().ref('users/'+user.uid + '/profile.jpg').getDownloadURL()
     .then(imgURL => {
-      console.log("success");
+      console.log("successfully downloaded profile picture");
       setProfilePic(imgURL);
     }).catch(error => {
       console.log('error img ' + error);
@@ -143,11 +138,15 @@ const Profile = () => {
       <div className='row profile-container'>
         <div className='col m-3 profile-user-col'>
           <Card className='profile-card' border='primary'>
-             <input type='file' onChange={onSubmit}/>
+             
             <Image
               className='profile-image'
               src={profilePic}
               roundedCircle
+            />
+            <input 
+              type='file' 
+              onChange={onSubmit}
             />
             <h3 className='mt-2 mb-3 text-primary'>{name}</h3>
             <h5 className='mt-2 mb-3 text-primary'>Current Level: {cuteName}</h5>
