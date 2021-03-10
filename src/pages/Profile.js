@@ -8,6 +8,9 @@ import nicknames from '../assets/nicknames';
 import defaultProfileImage from '../images/default-profile-img.jpg';
 import firebase from 'firebase/app';
 import 'firebase/storage';
+//const {Storage} = require('@google-cloud/storage');
+//const storage = new Storage();
+//const myBucket = storage.bucket('dream-in-green.appspot.com');
 
 const Profile = () => {
   const { logout, user, usersCollection } = useAuth();
@@ -25,6 +28,9 @@ const Profile = () => {
     logout();
     redirect.push('/');
   }
+
+
+
 
   useEffect(() => {
   
@@ -65,15 +71,39 @@ const Profile = () => {
         setName(doc.data().firstName + ' ' + doc.data().lastName);
         setSchool(doc.data().school);
         
+        downloadProfilePic();
+        
+
       });
   }, []);
 
-  const onSubmit = (file) => {
-    let bucket = firebase.storage().ref().child(file.target.value);
-    bucket.put(file.target.files[0]).then((snapshot) => {
-      console.log('Uploaded a file! ' , snapshot);
+ //Uploads the file to the firebase 
+  async function onSubmit (file) {
+    /*
+      The ref() parameter is what we are setting the path of the users profile picture in our firebase bucket
+      The await keyword is used to makesure the program waits for the image to be uploaded to firebase
+      before running the downloadProfilePic() method
+    */
+    await firebase.storage().ref('users/'+user.uid + '/profile.jpg').put(file.target.files[0]).then( () => {
+      console.log("Successfully uploaded image")
+    }).catch(error => {
+      console.log("Error uploading image: " + error);
     });
-    setProfilePic(file.target.files[0]);
+
+    downloadProfilePic();
+  }
+
+  //Downloads the profile picture in our firebase bucket and sets the state of profilePic to it
+  const downloadProfilePic = () => {
+    firebase.storage().ref('users/'+user.uid + '/profile.jpg').getDownloadURL()
+    .then(imgURL => {
+      console.log("success");
+      setProfilePic(imgURL);
+    }).catch(error => {
+      console.log('error img ' + error);
+      setProfilePic(defaultProfileImage);
+    })
+
   }
 
   const month = [
