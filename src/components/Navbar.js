@@ -49,7 +49,7 @@ const NavBar = () => {
               Home
             </Nav.Link>
             <Nav.Link as={Link} to='/learn' eventKey={2}>
-              Tips
+              Learn
             </Nav.Link>
             {user && (
               <Nav.Link as={Link} to='/profile' eventKey={3}>

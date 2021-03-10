@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import LogIn from './pages/LogIn';
 import SignUp from './pages/SignUp';
-import Tips from './pages/Tips';
+import Learn from './pages/Learn';
 import SuccessPage from './pages/SuccessPage';
 import Profile from './pages/Profile';
 import NavBar from './components/Navbar';
@@ -39,7 +39,7 @@ const App = () => {
           </Route>
           <AuthRoute path='/questionnaire' component={Questionnaire} />
           <Route path='/learn'>
-            <Tips />
+            <Learn />
           </Route>
           <Route path='/success/:score'>
             <SuccessPage />

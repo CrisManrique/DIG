@@ -20,6 +20,11 @@
   animation: gradientAnimation 30s ease infinite;
 }
 
+.darkgreen-bg {
+  background-color: #006400;
+  background-size: 400% 400%;
+}
+
 @keyframes gradientAnimation {
   0% {
     background-position: 100% 0%;
