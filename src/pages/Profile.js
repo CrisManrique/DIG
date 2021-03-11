@@ -8,6 +8,7 @@ import nicknames from '../assets/nicknames';
 import defaultProfileImage from '../images/default-profile-img.jpg';
 import firebase from 'firebase/app';
 import 'firebase/storage';
+import imageCompression from 'browser-image-compression';
 
 const Profile = () => {
   const { logout, user, usersCollection } = useAuth();
@@ -26,11 +27,7 @@ const Profile = () => {
     redirect.push('/');
   }
 
-
-
-
   useEffect(() => {
-  
     usersCollection
       .doc(user.uid)
       .get()
@@ -64,27 +61,46 @@ const Profile = () => {
           setLast('N/A');
         }
 
-
         setName(doc.data().firstName + ' ' + doc.data().lastName);
         setSchool(doc.data().school);
         
         downloadProfilePic();
-        
-
       });
   }, []);
 
- //Uploads the file to the firebase 
+
+
+
+
+
+
+ //Uploads the file to the firebase TODO: Figure out how to compress images before sending it to DB
    const onSubmit = (file) => {
+    //Forces the image to be saved as a jpeg in firebase
+    const metadata = {
+      contentType: 'image/jpeg',
+    }   
+
+    let imageFile = file.target.files[0];
+    let options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 1080,
+      useWebWorker: true
+    }
+
     /*
+      The first parameter is the image we are compressing and the second parameter are the settings we chose for compressing the image
       The ref() parameter is what we are setting the path of the users profile picture in our firebase bucket
     */
-    firebase.storage().ref('users/'+user.uid + '/profile.jpg').put(file.target.files[0]).then( () => {
-      console.log("Successfully uploaded image")
-    }).catch(error => {
-      console.log("Error uploading image: " + error);
-    });
+    imageCompression(imageFile, options).then( (compressedFile) => {
+      firebase.storage().ref('users/'+ user.uid + '/profile.jpg').put(compressedFile, metadata).then( () => {
+        console.log("Successfully uploaded image")
+      }).catch(error => {
+        console.log("Error uploading image: " + error);
+      });
+    })
 
+    //Sets the profilePic state to the local file the first time it's uploaded. Everytime after that it will be fetched from firebase with the downloadProfilePic() method
     setProfilePic(URL.createObjectURL(file.target.files[0]));
   }
 
@@ -98,7 +114,6 @@ const Profile = () => {
       console.log('error img ' + error);
       setProfilePic(defaultProfileImage);
     })
-
   }
 
   const month = [
@@ -138,7 +153,6 @@ const Profile = () => {
       <div className='row profile-container'>
         <div className='col m-3 profile-user-col'>
           <Card className='profile-card' border='primary'>
-             
             <Image
               className='profile-image'
               src={profilePic}
