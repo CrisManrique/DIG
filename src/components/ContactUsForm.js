@@ -31,32 +31,23 @@ const ContactUsForm = () => {
       name: name,
       email: email
     })
-
-
   };
 
 
 /*
-  This method sends the contents of the contact form to the email
+  Sends the contents of the contact form to the email
   attached to the emailJS account. 
 */
  const sendFeedback = (templateId, variables) => {
     emailjs.send('gmail', templateId, variables, 'user_cs0YJGgLFrjMgS8qwY6gg')
     .then(res => {
       console.log("Succesfully sent email: " + res)
-
     })
     .catch(e => {
       console.log("Error sending email: " + e);
     })
-
     document.getElementById("Form").reset(); //resets contact form text to empty
   }
-
-
-
-  
-
 
   return (
     <Row className='home-row'>

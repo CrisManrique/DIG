@@ -51,16 +51,6 @@ export function UserProvider({ children }) {
     });
   }
 
-  // This is how you add new data to firestore
-  // function p(uid, info) {
-  //   usersCollection.doc(uid).update({
-  //       information: info
-  //   });
-  //   console.log("updated info");
-  // }
-
-
-
   /* firebase api has its own listener for when the user has signed in or not
   we only want to do this once when the sign in page is mounted, once it is 
   un mounted there is no more need for the listener */
@@ -82,6 +72,7 @@ export function UserProvider({ children }) {
     return auth.signOut();
   }
 
+
   //useContext state to keep track of, where we also store useful functions and the user
   const defaultValue = {
     user,
@@ -91,10 +82,10 @@ export function UserProvider({ children }) {
     logout,
     registerUser,
     addScoreToDb,
-    
   };
 
   return (
+   
     <userContext.Provider value={defaultValue}>
       {!loading && children}
     </userContext.Provider>

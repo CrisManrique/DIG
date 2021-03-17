@@ -21,6 +21,8 @@ const NavBar = () => {
       setActiveKey(2);
     } else if (location.pathname.startsWith('/profile')) {
       setActiveKey(3);
+    } else if (location.pathname.startsWith('/leaderboard')) {
+      setActiveKey(4);
     } else if (location.pathname == '/') {
       setActiveKey(0);
     } else {
@@ -56,6 +58,9 @@ const NavBar = () => {
                 Profile
               </Nav.Link>
             )}
+            <Nav.Link as={Link} to='/leaderboard' eventKey={4}>
+              Leaderboard
+            </Nav.Link>
           </Nav>
           <Link
             to='/questionnaire'

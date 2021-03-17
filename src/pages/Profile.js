@@ -13,7 +13,7 @@ import imageCompression from 'browser-image-compression';
 const Profile = () => {
   const { logout, user, usersCollection } = useAuth();
   const redirect = useHistory();
-
+  
   const [name, setName] = useState('');
   const [school, setSchool] = useState('');
   const [last, setLast] = useState('');
@@ -21,7 +21,7 @@ const Profile = () => {
   const [scores, setScores] = useState(null);
   const [cuteName, setCuteName] = useState('');
   const [profilePic, setProfilePic] = useState(defaultProfileImage);
-
+  
   function handleLogOut() {
     logout();
     redirect.push('/');
@@ -63,27 +63,24 @@ const Profile = () => {
 
         setName(doc.data().firstName + ' ' + doc.data().lastName);
         setSchool(doc.data().school);
-        
         downloadProfilePic();
+
       });
   }, []);
 
-
-
-
-
-
-
- //Uploads the file to the firebase TODO: Figure out how to compress images before sending it to DB
-   const onSubmit = (file) => {
+ //Uploads the file to the firebase 
+   const uploadProfilePic = (file) => {
     //Forces the image to be saved as a jpeg in firebase
-    const metadata = {
+    const cacheControl = {
       contentType: 'image/jpeg',
+      customMetadata: {
+        userId: user.uid
+      }
     }   
 
-    let imageFile = file.target.files[0];
-    let options = {
-      maxSizeMB: 1,
+    const imageFile = file.target.files[0];
+    const options = {
+      maxSizeMB: 0.1,
       maxWidthOrHeight: 1080,
       useWebWorker: true
     }
@@ -93,20 +90,21 @@ const Profile = () => {
       The ref() parameter is what we are setting the path of the users profile picture in our firebase bucket
     */
     imageCompression(imageFile, options).then( (compressedFile) => {
-      firebase.storage().ref('users/'+ user.uid + '/profile.jpg').put(compressedFile, metadata).then( () => {
+      firebase.storage().ref('users/'+ user.uid + '/profile.jpg').put(compressedFile, cacheControl).then( () => {
         console.log("Successfully uploaded image")
       }).catch(error => {
         console.log("Error uploading image: " + error);
       });
     })
 
+    localStorage.setItem('image', URL.createObjectURL(imageFile));
     //Sets the profilePic state to the local file the first time it's uploaded. Everytime after that it will be fetched from firebase with the downloadProfilePic() method
-    setProfilePic(URL.createObjectURL(file.target.files[0]));
+    setProfilePic(URL.createObjectURL(imageFile));
   }
 
-  //Downloads the profile picture in our firebase bucket and sets the state of profilePic to it
+  //Fetches the profile picture in our firebase bucket and sets the state of profilePic to it
   const downloadProfilePic = () => {
-    firebase.storage().ref('users/'+user.uid + '/profile.jpg').getDownloadURL()
+    firebase.storage().ref('users/'+ user.uid + '/profile.jpg').getDownloadURL()
     .then(imgURL => {
       console.log("successfully downloaded profile picture");
       setProfilePic(imgURL);
@@ -133,7 +131,7 @@ const Profile = () => {
 
   const htmlOfScores =
     scores !== null && scores !== undefined
-      ? scores.slice(0, 9).map((score, i) => {
+      ? scores.slice(0, 10).map((score, i) => {
           return (
             <tr key={i}>
               <td>{scores.length - i}</td>
@@ -160,10 +158,10 @@ const Profile = () => {
             />
             <input 
               type='file' 
-              onChange={onSubmit}
+              onChange={uploadProfilePic}
             />
             <h3 className='mt-2 mb-3 text-primary'>{name}</h3>
-            <h5 className='mt-2 mb-3 text-primary'>Current Level: {cuteName}</h5>
+            <h4 className='mt-2 mb-3 text-primary'>Level: {cuteName}</h4>
             <button
               type='button'
               className='btn btn-primary py-2 px-5 mb-3'

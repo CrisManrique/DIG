@@ -11,6 +11,7 @@ import Footer from './components/Footer';
 import { UserProvider } from './states/userState';
 import AuthRoute from './components/AuthRoute';
 import Questionnaire from './pages/Questionnaire';
+import Leaderboard from './pages/Leaderboard';
 
 const NoMatchPage = () => {
   return (
@@ -40,6 +41,9 @@ const App = () => {
           <AuthRoute path='/questionnaire' component={Questionnaire} />
           <Route path='/learn'>
             <Learn />
+          </Route>
+          <Route path='/leaderboard'>
+            <Leaderboard />
           </Route>
           <Route path='/success/:score'>
             <SuccessPage />
